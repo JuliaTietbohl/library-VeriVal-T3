@@ -50,6 +50,10 @@ public class BookFixture {
         return new CheckedOutBook(new BookInformation(anyBookId(), Circulating), anyBranch(), anyPatronId(), version0());
     }
 
+    public static AvailableBook restrictedBookAt(LibraryBranchId libraryBranchId) {
+        return new AvailableBook(new BookInformation(anyBookId(), Restricted), libraryBranchId, version0());
+    }
+
     public static AvailableBook restrictedBook() {
         return new AvailableBook(new BookInformation(anyBookId(), Restricted), anyBranch(), version0());
     }

@@ -148,6 +148,14 @@ public class PatronFixture {
     }
 
 
+    static Patron patronWithAllPoliciesAndOverdueCheckouts(PatronId patronId, PatronType type, Map<LibraryBranchId, Set<BookId>> overdueCheckouts, int numberOfHolds) {
+        return new Patron(
+                patronInformation(patronId, type),
+                allCurrentPolicies(),
+                new OverdueCheckouts(overdueCheckouts),
+                booksOnHold(numberOfHolds));
+    }
+
     public static Patron regularPatronWithHold(BookOnHold bookOnHold) {
         return regularPatronWith(new Hold(bookOnHold.getBookId(), bookOnHold.getHoldPlacedAt()));
     }
