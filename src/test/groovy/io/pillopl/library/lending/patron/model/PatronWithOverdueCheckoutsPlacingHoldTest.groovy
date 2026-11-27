@@ -4,6 +4,7 @@ import io.pillopl.library.catalogue.BookId
 import io.pillopl.library.lending.book.model.AvailableBook
 import io.pillopl.library.lending.librarybranch.model.LibraryBranchId
 import io.vavr.control.Either
+import spock.lang.PendingFeature
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -121,6 +122,15 @@ class PatronWithOverdueCheckoutsPlacingHoldTest extends Specification {
                 it.bookId == book.bookId.bookId
                 it.libraryBranchId == branch.libraryBranchId
             }
+    }
+
+    @PendingFeature(reason = 'README says "more than two overdue checkouts" but PlacingOnHoldPolicy rejects at two (>= MAX_COUNT_OF_OVERDUE_RESOURCES)')
+    def 'TU-05 README specification: a patron with exactly two overdue checkouts at a branch can still place a hold'() {
+        given:
+            LibraryBranchId branch = anyBranch()
+            Patron patron = patronWithAllPoliciesAndOverdueCheckouts(anyPatronId(), Regular, [(branch): books(2)], 0)
+        expect:
+            patron.placeOnHold(circulatingAvailableBookAt(branch), closeEnded(3)).isRight()
     }
 
     private static Set<BookId> books(int howMany) {
